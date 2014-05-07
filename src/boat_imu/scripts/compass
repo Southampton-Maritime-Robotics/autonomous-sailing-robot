@@ -13,8 +13,8 @@ from boat_imu.msg import IMU_msg
 from boat_imu import magnetometer as mag
 import time
 
-AVERAGE_TIME = 0.5 # in Seconds
-PUBLISH_RATE = 0.1 # in Hz
+AVERAGE_TIME = 0.1 # in Seconds
+PUBLISH_RATE = 10 # in Hz
 
 
 def compass_talker():

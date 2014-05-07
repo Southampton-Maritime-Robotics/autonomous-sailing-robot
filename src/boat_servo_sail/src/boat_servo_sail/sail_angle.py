@@ -10,18 +10,16 @@ def calculate_angle_boat_wind(boat_compass, wind_direction):
 
 def assign_length(diff_wind_boat):
     angles = [
-        (30, 1), #downwind
-        (40, 0.95),
-        (50, 0.9),
-        (60, 0.85),
-        (70, 0.8),
-        (80, 0.7),
-        (90, 0.6),
+        (45, 1), #downwind
+        (50, 0.95),
+        (60, 0.9),
+        (70, 0.85),
+        (80, 0.8),
+        (90, 0.7),
         (110, 0.5),
         (120, 0.4),
         (130, 0.3),
-        (140, 0.2),
-        (150, 0.15),
+        (135, 0.2),
         (180, 0.1) #upwind
         ]
 

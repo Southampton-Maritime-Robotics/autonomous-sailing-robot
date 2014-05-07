@@ -8,16 +8,18 @@ import rospy
 from std_msgs.msg import Float32
 from std_msgs.msg import Int64
 from std_msgs.msg import Header
-#from bbio import *
-#from Servo import *
+from bbio import *
+from Servo import *
 import time
 from boat_servo_sail import sail_angle
 
-#sail_servo = Servo(PWM1A)
+sail_servo = Servo(PWM1A)
 # servo2 = Servo(PWM2A)
-#sail_servo.write(0)
-
+sail_servo.write(0)
 wind_direction = 120
+SAIL_SERVO_MAX = 50
+SAIL_SERVO_MIN = 0
+MARGIN = SAIL_SERVO_MAX - SAIL_SERVO_MIN
 
 def store_wind_direction(wind_dir):
     global wind_direction
@@ -30,7 +32,7 @@ def publish_sail(compass):
          rospy.loginfo('sail position' + str(sail))
          #update header time
          h.stamp = rospy.Time.now()
- #        sail_servo.write(sail)
+         sail_servo.write(sail * MARGIN)
          # TODO: switch to sail message that includes header
          publishSail.publish(sail)
 

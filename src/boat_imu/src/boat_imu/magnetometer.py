@@ -20,13 +20,17 @@ except:
 
 from os.path import expanduser
 
-home = expanduser("~")
-f = open(home + '/boat_data_compass', 'r')
-OFFSET = [0, 0, 0]
-OFFSET[0] = int(f.readline())
-OFFSET[1] = int(f.readline())
-OFFSET[2] = int(f.readline())
-f.close()
+try:
+    home = expanduser("~")
+    f = open(home + '/boat_data_compass', 'r')
+    OFFSET = [0, 0, 0]
+    OFFSET[0] = int(f.readline())
+    OFFSET[1] = int(f.readline())
+    OFFSET[2] = int(f.readline())
+    f.close()
+except:
+    print("WARNING: No calibration file found")
+    OFFSET = [0,0,0]
 
 AVERAGE_TIME = 1
 

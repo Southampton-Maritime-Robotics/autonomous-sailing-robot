@@ -5,16 +5,17 @@
 set sail to appropriate length for picking up speed
 """
 import rospy
+from std_msgs.msg import Float32
 from std_msgs.msg import Int64
 from std_msgs.msg import Header
-from bbio import *
-from Servo import *
+#from bbio import *
+#from Servo import *
 import time
 from boat_servo_sail import sail_angle
 
-sail_servo = Servo(PWM1A)
+#sail_servo = Servo(PWM1A)
 # servo2 = Servo(PWM2A)
-sail_servo.write(0)
+#sail_servo.write(0)
 
 wind_direction = 120
 
@@ -29,7 +30,7 @@ def publish_sail(compass):
          rospy.loginfo('sail position' + str(sail))
          #update header time
          h.stamp = rospy.Time.now()
-         sail_servo.write(sail)
+ #        sail_servo.write(sail)
          # TODO: switch to sail message that includes header
          publishSail.publish(sail)
 
@@ -45,6 +46,6 @@ def sail_react():
 if __name__ == '__main__':
     try:
         rospy.init_node('sail_talker', anonymous=True)
-        publishSail = rospy.Publisher('SailPosition', Int64, queue_size=10)
+        publishSail = rospy.Publisher('SailPosition', Float32, queue_size=10)
         sail_react()
     except rospy.ROSInterruptException: pass

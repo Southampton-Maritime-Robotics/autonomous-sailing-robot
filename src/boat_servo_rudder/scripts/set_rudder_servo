@@ -10,11 +10,12 @@ from std_msgs.msg import Header
 from bbio import *
 from Servo import *
 
+RUDDER_LEFT_MAX = 145
+RUDDER_RIGHT_MAX = 60
+RUDDER_ZERO = 102
 rudder_servo = Servo(PWM2A)
-rudder_servo.write(0)
-RUDDER_LEFT_MAX = 50
-RUDDER_RIGHT_MAX = 0
-RUDDER_ZERO = 20
+rudder_servo.write(RUDDER_ZERO)
+
 
 def get_pwm(rudder_pid):
     if rudder_pid > 0:
@@ -26,14 +27,19 @@ def get_pwm(rudder_pid):
     return rudder_pwm
 
 def set_rudder(pid):
-     h = Header()
-     if not rospy.is_shutdown():
-         rudder_pid = pid.data
-         rudder_pwm = get_pwm(rudder_pid)
-         rospy.loginfo('rudder pwm' + str(rudder_pwm))
-         #update header time
-         h.stamp = rospy.Time.now()
-         rudder_servo.write(rudder_pwm)
+    h = Header()
+    if not rospy.is_shutdown():
+        rudder_pid = pid.data
+        rudder_pwm = get_pwm(rudder_pid)
+        rospy.loginfo('rudder pwm' + str(rudder_pwm))
+        #update header time
+        h.stamp = rospy.Time.now()
+        if ((rudder_pwm < RUDDER_LEFT_MAX) and
+            (rudder_pwm > RUDDER_RIGHT_MAX)):
+            #safety check, to avoid the sensor trying to go to values
+            # that might break things
+            rudder_servo.write(rudder_pwm)
+
 
 
 def rudder_react():

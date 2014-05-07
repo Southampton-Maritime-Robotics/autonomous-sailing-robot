@@ -33,7 +33,7 @@ def publish_sail(compass):
          rospy.loginfo('sail position' + str(sail))
          #update header time
          h.stamp = rospy.Time.now()
-         sail_PWM = sail * MARGIN
+         sail_PWM = SAIL_SERVO_MIN + (sail * MARGIN)
          # safety test so servos will not be set to values
          # that might damage the boat
          if ((sail_PWM > SAIL_SERVO_MIN) and

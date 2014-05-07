@@ -1,0 +1,46 @@
+#!/usr/bin/env python
+# this line is needed so the execution happens in python environment
+
+"""
+script to simulate movement when simulating/testing
+"""
+
+
+import rospy
+from std_msgs.msg import Header
+from sensor_msgs.msg import NavSatFix
+
+# initialise global memory for last point
+last_gps = NavSatFix()
+last_gps.latitude = 1
+last_gps.longitude = 2
+
+def get_next_position():
+    """
+    use simulated speeds or other estimates to determine next gps position
+    """
+    wp_active = last_gps
+
+    return wp_active
+
+
+
+def sim_gps_talker():
+    r = rospy.Rate(0.5) # in Hz
+    h = Header()
+    while not rospy.is_shutdown():
+        position = get_next_position()
+        rospy.loginfo('simulated next position: ' + str(position))
+        #update header time
+        h.stamp = rospy.Time.now()
+        publishSimulated.publish(get_next_position())
+
+        r.sleep()
+
+
+if __name__ == '__main__':
+    try:
+        rospy.init_node('publishSimulated', anonymous=True)
+        publishSimulated = rospy.Publisher('simulated-fix', NavSatFix, queue_size = 10)
+        sim_gps_talker()
+    except rospy.ROSInterruptException: pass

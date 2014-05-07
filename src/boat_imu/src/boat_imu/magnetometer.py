@@ -102,8 +102,8 @@ def subtract_offset(value):
     return value
 
 def calc_angle(x, y):
-    compass_angle = math.atan2(x, y)
-    compass_angle = math.degrees(compass_angle) + 180
+    compass_angle = math.atan2(-x, -y)
+    compass_angle = math.degrees(compass_angle + 3.1415)
     return compass_angle
 
 def read_magnetometer():
@@ -132,8 +132,8 @@ def average_value(av_time):
     return av_value
 
 def get_mag_angle(av_time):
-    compass = average_values(av_time)
-    compass_angle = calc_angle(-compass[2], compass[1])
+    compass = average_value(av_time)
+    compass_angle = calc_angle(compass[2], compass[1])
     return compass_angle
 
 if __name__ == '__main__':

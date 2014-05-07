@@ -20,6 +20,8 @@ def get_next_position():
     use simulated speeds or other estimates to determine next gps position
     """
     wp_active = last_gps
+    #TODO get actual simulated values
+    # based on sail angle, heading
 
     return wp_active
 

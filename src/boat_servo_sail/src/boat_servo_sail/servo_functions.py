@@ -1,12 +1,33 @@
+"""
+test PWM
+
+"""
 import Adafruit_BBIO.PWM as PWM
 import time
-servo1 = "EHRPWM2B"
-servo2 = "EHRPWM2A"
-PWM.start(servo1, 95.0, 60)
-PWM.start(servo2, 95.0, 60)
-time.wait(5)
-PWM.set_duty_cycle(servo1, 97.0)
-PWM.set_duty_cycle(servo2, 97.0)
-time.wait(5)
-PWM.stop(servo1)
-PWM.stop(servo2)
+pinA = "P8_19"
+pinB = "P8_13"
+print('init PWM')
+PWM.stop(pinA)
+PWM.stop(pinB)
+PWM.cleanup()
+
+PWM.start(pinA, 0)
+PWM.start(pinB, 0)
+time.sleep(1)
+print('switch')
+PWM.set_duty_cycle(pinA, 97)
+PWM.set_duty_cycle(pinB, 97)
+time.sleep(2)
+print('switch')
+#PWM.set_frequency(pinA, 60)
+PWM.set_duty_cycle(pinA, 97)
+PWM.set_duty_cycle(pinB, 97)
+time.sleep(2)
+
+
+print('stop')
+PWM.stop(pinA)
+PWM.stop(pinB)
+PWM.cleanup()
+print('done')
+

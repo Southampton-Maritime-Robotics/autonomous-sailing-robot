@@ -9,11 +9,13 @@
   <group ns="planning">
     <node name="publish_waypoint" pkg="boat_mission_planner" type="publish_waypoint"/>
     <node name="publish_goal_heading" pkg="boat_curr_heading" type="publish_goal_heading"/>
+    <node name="publish_rudder_pid" pkg="boat_pid_control" type="set_rudder"/>
   </group>
 
   <group ns="actuators">
     <node name="publish_sail" pkg="boat_servo_sail" type="set_sail_length"/>
   </group>
+    <node name="set_rudder" pkg="boat_servo_rudder" type="set_rudder_servo"/>
 
   <group ns="simulated">
   </group>

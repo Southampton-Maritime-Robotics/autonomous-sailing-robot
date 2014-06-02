@@ -3,15 +3,24 @@
 
 import rospy
 from std_msgs.msg import String
+from boat_imu.msg import measurements
 
 def talker():
-    pub = rospy.Publisher('chatter', String, queue_size=10)
+    pubString = rospy.Publisher('chatter', String, queue_size=10)
+    pubAcc = rospy.Publisher('Accelerometer', measurements, queue_size=10)
     rospy.init_node('talker', anonymous=True)
     r = rospy.Rate(10) # 10hz
     while not rospy.is_shutdown():
         str = "hello world %s"%rospy.get_time()
-        rospy.loginfo(str)
-        pub.publish(str)
+        #rospy.loginfo(str)
+        pubString.publish(str)
+        int = 1
+        #rospy.loginfo(int)
+        pubString.publish(int)
+        test_measurement = measurements(1,2,3)
+        #rospy.loginfo(test_measurement)
+        pubAcc.publish(test_measurement)
+
         r.sleep()
 
 if __name__ == '__main__':

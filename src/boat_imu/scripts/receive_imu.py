@@ -11,8 +11,8 @@ from boat_imu.msg import measurements
 
 # number of remembered values
 history_length = 5
-# Air pressure history
-# AirPressure[0] newest
+""" Air pressure history
+ AirPressure[0] newest """
 airPressure = [0 for x in range(history_length)]
 air = [0 for x in range(history_length)]
 
@@ -35,6 +35,9 @@ def storeAirPressure(data):
     print(airPressure)
 
 def storeIntROS(data, storage):
+""" insert new Int value received from ROS in
+    the storage list, remove oldest value
+    """
     storage.insert(0,data.data)
     storage.pop()
     print(storage)

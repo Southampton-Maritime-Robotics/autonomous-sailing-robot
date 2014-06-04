@@ -1,10 +1,21 @@
+#!/usr/bin/env python
+# this line is needed so the execution happens in python environment
+
+
+
 import rospy
 from std_msgs.msg import Int64
 from std_msgs.msg import Header
 from boat_imu.msg import measurements
 
+
+# number of remembered values
 history_length = 5
+# Air pressure history
+# AirPressure[0] newest
 airPressure = [0 for x in range(history_length)]
+air = [0 for x in range(history_length)]
+
 
 def accelerometerPrint(data):
     rospy.loginfo(rospy.get_caller_id()+"""
@@ -23,11 +34,18 @@ def storeAirPressure(data):
     airPressure.pop()
     print(airPressure)
 
+def storeIntROS(data, storage):
+    storage.insert(0,data.data)
+    storage.pop()
+    print(storage)
+
+
 def listener():
     rospy.init_node('listener', anonymous=True)
-    rospy.Subscriber("AirPressure", Int64, airPressurePrint)
-    rospy.Subscriber("Accelerometer", measurements, accelerometerPrint)
+    #rospy.Subscriber("AirPressure", Int64, airPressurePrint)
+    #rospy.Subscriber("Accelerometer", measurements, accelerometerPrint)
     rospy.Subscriber("AirPressure", Int64, storeAirPressure)
+    rospy.Subscriber("AirPressure", Int64, storeIntROS, air)
     rospy.spin()
                                                     
 

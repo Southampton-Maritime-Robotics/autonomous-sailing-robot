@@ -14,25 +14,12 @@ history_length = 5
 """ Air pressure history
  AirPressure[0] newest """
 airPressure = [0 for x in range(history_length)]
-air = [0 for x in range(history_length)]
 accelerometer = [["header", 0, 0, 0] for x in range(history_length)]
+magnetometer = [["header", 0, 0, 0] for x in range(history_length)]
+gyroscope = [["header", 0, 0, 0] for x in range(history_length)]
+# TODO make this a dictionary, that contains: name, header, values
+# maybe even dimension?
 
-def accelerometerPrint(data):
-    rospy.loginfo(rospy.get_caller_id()+"""
-    I heard x acceleration is %i, 
-    y acceleration is %i, 
-    z acceleration is %i;
-    Header: %s""", data.x_value, data.y_value, data.z_value, data.header)
-     
-def airPressurePrint(data):
-    rospy.loginfo(rospy.get_caller_id()+"""
-    I heard air pressure is %i""",
-    data.data)
-
-def storeAirPressure(data):
-    airPressure.insert(0,data.data)
-    airPressure.pop()
-    print(airPressure)
 
 def storeIntROS(data, storage):
     """ insert new Int value received from ROS in
@@ -40,7 +27,7 @@ def storeIntROS(data, storage):
     """
     storage.insert(0,data.data)
     storage.pop()
-    print(storage)
+    print("add value" + str(storage[0]))
 
 def store3dROS(data, storage):
     """ insert new header + three directional measurements
@@ -48,15 +35,14 @@ def store3dROS(data, storage):
     """
     storage.insert(0,[data.header, data.x_value, data.y_value, data.z_value])
     storage.pop()
-    print(storage)
+    print("add value" + str(storage[0]))
 
 def listener():
     rospy.init_node('listener', anonymous=True)
-    #rospy.Subscriber("AirPressure", Int64, airPressurePrint)
-    #rospy.Subscriber("Accelerometer", measurements, accelerometerPrint)
-    rospy.Subscriber("AirPressure", Int64, storeAirPressure)
-    rospy.Subscriber("AirPressure", Int64, storeIntROS, air)
+    rospy.Subscriber("AirPressure", Int64, storeIntROS, airPressure)
     rospy.Subscriber("Accelerometer", measurements, store3dROS, accelerometer)
+    rospy.Subscriber("Magnetometer", measurements, store3dROS, magnetometer)
+    rospy.Subscriber("Gyroscope", measurements, store3dROS, magnetometer)
     rospy.spin()
                                                     
 

@@ -16,31 +16,32 @@ empty_header_history = ["header" for x in range(history_length)]
 
 
 airPressure = {
-'name': 'Air Pressure', 
-'value': empty_history}
+'name': 'AirPressure', 
+'value': list(empty_history)}
+
 
 accelerometer = {
 'name': 'Accelerometer',
-'header': map(str, empty_history),
-'x_value': empty_history,
-'y_value': empty_history,
-'z_value': empty_history
+'header': map(str, list(empty_history)),
+'x_value': list(empty_history),
+'y_value': list(empty_history),
+'z_value': list(empty_history)
 }
 
 magnetometer = {
 'name': 'Magnetometer',
-'header': map(str, empty_history),
-'x_value': empty_history,
-'y_value': empty_history,
-'z_value': empty_history
+'header': map(str, list(empty_history)),
+'x_value': list(empty_history),
+'y_value': list(empty_history),
+'z_value': list(empty_history)
 }
 
 gyroscope = {
 'name': 'Gyroscope',
-'header': map(str, empty_history),
-'x_value': empty_history,
-'y_value': empty_history,
-'z_value': empty_history
+'header': map(str, list(empty_history)),
+'x_value': list(empty_history),
+'y_value': list(empty_history),
+'z_value': list(empty_history)
 }
 
 def storeIntROS(data, storage):
@@ -72,13 +73,14 @@ def store3dROS(data, storage):
     ' z_value ' + str(storage['z_value'][0]) +
     ' to ' + storage['name'])
     rospy.logdebug(storage)
-
+    rospy.logdebug(accelerometer)
+    rospy.logdebug('!!!!!!!!!!')
 
 def imu_listener():
     rospy.init_node('listener', anonymous=True)
     rospy.loginfo('ros imu listener started')
     rospy.Subscriber("AirPressure", Int64, storeIntROS, airPressure)
-    rospy.Subscriber("Accelerometer", measurements, store3dROS, accelerometer)
+    rospy.Subscriber(accelerometer['name'], measurements, store3dROS, accelerometer)
     rospy.Subscriber("Magnetometer", measurements, store3dROS, magnetometer)
     rospy.Subscriber("Gyroscope", measurements, store3dROS, gyroscope)
     rospy.spin()
@@ -86,4 +88,3 @@ def imu_listener():
 
 if __name__ == '__main__':
     imu_listener()
-

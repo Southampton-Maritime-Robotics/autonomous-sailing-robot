@@ -17,7 +17,7 @@ def talker():
     
 
     rospy.init_node('talker', anonymous=True)
-    r = rospy.Rate(10) # 10hz
+    r = rospy.Rate(2) # 10hz
     h = Header()
     while not rospy.is_shutdown():
         # update header time

@@ -1,6 +1,11 @@
 # ROS
 build/
 devel/
+rospy
+
+# if needed:
+# script to set up local ros environment
+local-setup
 
 # PYTHON
 # Byte-compiled / optimized / DLL files

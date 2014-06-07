@@ -10,32 +10,67 @@ from boat_imu.msg import measurements
 history_length = 5
 """ Air pressure history
  AirPressure[0] newest """
-airPressure = [0 for x in range(history_length)]
-accelerometer = [["header", 0, 0, 0] for x in range(history_length)]
-magnetometer = [["header", 0, 0, 0] for x in range(history_length)]
-gyroscope = [["header", 0, 0, 0] for x in range(history_length)]
-# TODO make this a dictionary, that contains: name, header, values
-# maybe even dimension?
-print('test')
-#rospy.loginfo("some text")
-print('test')
+# empty history to initialise storage lists
+empty_history = [0 for x in range(history_length)]
+empty_header_history = ["header" for x in range(history_length)]
+
+
+airPressure = {
+'name': 'Air Pressure', 
+'value': empty_history}
+
+accelerometer = {
+'name': 'Accelerometer',
+'header': map(str, empty_history),
+'x_value': empty_history,
+'y_value': empty_history,
+'z_value': empty_history
+}
+
+magnetometer = {
+'name': 'Magnetometer',
+'header': map(str, empty_history),
+'x_value': empty_history,
+'y_value': empty_history,
+'z_value': empty_history
+}
+
+gyroscope = {
+'name': 'Gyroscope',
+'header': map(str, empty_history),
+'x_value': empty_history,
+'y_value': empty_history,
+'z_value': empty_history
+}
 
 def storeIntROS(data, storage):
     """ insert new Int value received from ROS in
     the storage list, remove oldest value
     """
-    storage.insert(0,data.data)
-    storage.pop()
-    rospy.logdebug("add value" + str(storage[0]))
+    storage['value'].insert(0,data.data)
+    storage['value'].pop()
+    rospy.loginfo(
+    "add value " + str(storage['value'][0]) + ' to ' + storage['name'])
     rospy.logdebug(storage)
 
 def store3dROS(data, storage):
     """ insert new header + three directional measurements
     in the handed over storage list, remove oldest value
     """
-    storage.insert(0,[data.header, data.x_value, data.y_value, data.z_value])
-    storage.pop()
-    rospy.logdebug("add value" + str(storage[0]))
+    storage['header'].insert(0, data.header)
+    storage['header'].pop()
+    storage['x_value'].insert(0, data.x_value)
+    storage['x_value'].pop()
+    storage['y_value'].insert(0, data.y_value)
+    storage['y_value'].pop()
+    storage['z_value'].insert(0, data.z_value)
+    storage['z_value'].pop()
+
+    rospy.loginfo(
+    'add x_value ' + str(storage['x_value'][0]) + 
+    ' y_value ' + str(storage['y_value'][0]) +
+    ' z_value ' + str(storage['z_value'][0]) +
+    ' to ' + storage['name'])
     rospy.logdebug(storage)
 
 
@@ -45,7 +80,7 @@ def imu_listener():
     rospy.Subscriber("AirPressure", Int64, storeIntROS, airPressure)
     rospy.Subscriber("Accelerometer", measurements, store3dROS, accelerometer)
     rospy.Subscriber("Magnetometer", measurements, store3dROS, magnetometer)
-    rospy.Subscriber("Gyroscope", measurements, store3dROS, magnetometer)
+    rospy.Subscriber("Gyroscope", measurements, store3dROS, gyroscope)
     rospy.spin()
                                                     
 

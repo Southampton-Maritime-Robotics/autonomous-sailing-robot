@@ -83,7 +83,7 @@ catkin_python_setup()
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES boat_path_planner
-#  CATKIN_DEPENDS boat_functions rospy std_msgs
+#  CATKIN_DEPENDS boat_functions rospy std_msgs message_runtime
 #  DEPENDS system_lib
 )
 

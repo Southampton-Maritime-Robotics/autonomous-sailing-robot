@@ -1,0 +1,32 @@
+#!/usr/bin/env python
+# this line is needed so the execution happens in python environment
+
+import rospy
+from boat_functions.msg import boat_3d
+from boat_functions.msg import boat_1d
+from std_msgs.msg import Header
+
+
+
+def test():
+    publishTest3d = rospy.Publisher('tester3d', boat_3d, queue_size = 10)
+    publishTest1d = rospy.Publisher('tester', boat_1d, queue_size = 10)
+
+    rospy.init_node('test', anonymous=True)
+    r = rospy.Rate(1)
+    h = Header()
+    tester = 23
+    while not rospy.is_shutdown():
+        #update header time
+        h.stamp = rospy.Time.now()
+        publishTest3d.publish(boat_3d(h, tester, tester, tester))
+        publishTest1d.publish(boat_1d(h, tester))
+        r.sleep()
+
+
+
+
+if __name__ == '__main__':
+    try:
+        test()
+    except rospy.ROSInterruptException: pass

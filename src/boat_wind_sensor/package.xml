@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<package>
+  <name>boat_wind_sensor</name>
+  <version>0.0.1</version>
+  <description>Package to publish wind direction measurements
+
+  Goal:
+  Wind direction measurement updates are published by this packet
+  For boats without wind sensor a static value is published
+  This value is determined by measurements on shore
+  The values may be updated via RF connection
+  </description>
+
+  <maintainer email="sms4g13@soton.ac.uk">smaria</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>boat_functions</build_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+
+  <run_depend>boat_functions</run_depend>
+  <run_depend>rospy</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>message_runtime</run_depend>
+
+
+  <export>
+
+  </export>
+</package>

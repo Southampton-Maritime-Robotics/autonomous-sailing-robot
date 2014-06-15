@@ -5,6 +5,7 @@ project(boat_mission_planner)
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  boat_functions
   rospy
   std_msgs
   message_generation
@@ -46,8 +47,6 @@ catkin_python_setup()
 ## Generate messages in the 'msg' folder
 # add_message_files(
 #   FILES
-#   Message1.msg
-#   Message2.msg
 # )
 
 ## Generate services in the 'srv' folder
@@ -82,7 +81,7 @@ catkin_python_setup()
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES boat_mission_planner
-  CATKIN_DEPENDS rospy std_msgs message_runtime
+  CATKIN_DEPENDS boat_functions rospy std_msgs message_runtime
 #  DEPENDS system_lib
 )
 

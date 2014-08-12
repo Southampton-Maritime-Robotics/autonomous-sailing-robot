@@ -4,7 +4,7 @@
 import rospy
 from std_msgs.msg import Int64
 from std_msgs.msg import Header
-from boat_imu.msg import measurements
+from boat_imu.msg import IMU_msg
 
 # number of remembered values
 history_length = 5
@@ -80,9 +80,9 @@ def imu_listener():
     rospy.init_node('listener', anonymous=True)
     rospy.loginfo('ros imu listener started')
     rospy.Subscriber("AirPressure", Int64, storeIntROS, airPressure)
-    rospy.Subscriber(accelerometer['name'], measurements, store3dROS, accelerometer)
-    rospy.Subscriber("Magnetometer", measurements, store3dROS, magnetometer)
-    rospy.Subscriber("Gyroscope", measurements, store3dROS, gyroscope)
+    rospy.Subscriber(accelerometer['name'], IMU_msg, store3dROS, accelerometer)
+    rospy.Subscriber("Magnetometer", IMU_msg, store3dROS, magnetometer)
+    rospy.Subscriber("Gyroscope", IMU_msg, store3dROS, gyroscope)
     rospy.spin()
                                                     
 

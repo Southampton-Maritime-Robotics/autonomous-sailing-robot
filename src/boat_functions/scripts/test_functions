@@ -1,11 +1,10 @@
 #!/usr/bin/env python
 # this line is needed so the execution happens in python environment
 import rospy
+import sys
+print sys.path
 from boat_functions import test_printer as bf
+from boat_imu import printing_imu as bi
+
 bf.test_printer()
-"""
-import boat_imu
-from boat_imu import read_imu as ri
-print("works")
-ri.test_imu_functions()
-"""
+bi.printing_imu()

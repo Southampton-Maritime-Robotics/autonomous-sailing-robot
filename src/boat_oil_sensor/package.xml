@@ -1,0 +1,29 @@
+<package>
+  <name>boat_oil_sensor</name>
+  <version>0.0.1</version>
+  <description>Package that simulates oil sensor measurements
+  
+  Goal:
+  If a position is published by the gps is looks up if that poisition
+  has oil or not.
+  Since in a real case, the sensor will not work with coordinates,
+  it will only return oil or no oil, not the gps coordinates that the
+  measurement belongs to.
+  </description>
+
+  <maintainer email="sms4g13@soton.ac.uk">smaria</maintainer>
+  <license>BSD</license>
+
+  <buildtool_depend>catkin</buildtool_depend>
+  <build_depend>rospy</build_depend>
+  <build_depend>std_msgs</build_depend>
+  <build_depend>message_generation</build_depend>
+
+  <run_depend>rospy</run_depend>
+  <run_depend>std_msgs</run_depend>
+  <run_depend>message_runtime</run_depend>
+
+  <export>
+
+  </export>
+</package>

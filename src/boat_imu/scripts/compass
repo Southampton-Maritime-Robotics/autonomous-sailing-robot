@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+# this line is needed so the execution happens in python environment
+
+"""
+Script to find offset values for compass,
+store them
+"""
+import rospy
+from std_msgs.msg import Int64
+from std_msgs.msg import Header
+from boat_imu.msg import IMU_msg
+
+from boat_imu import magnetometer as mag
+import time
+
+AVERAGE_TIME = 0.5 # in Seconds
+PUBLISH_RATE = 0.1 # in Hz
+
+def average_angle():
+    a = []
+    av_angle = 0
+    start = time.clock()
+    while (time.clock() - start) < AVERAGE_TIME:
+        a.append( mag.read_magnetometer())
+    for i in range(len(a)):
+            av_angle += a[i]
+
+    av_angle = av_angle/len(a)
+    av_angle = round(av_angle)
+    av_angle = int(av_angle)
+    return av_angle
+
+print average_angle()
+
+
+def compass_talker():
+    pubCompass = rospy.Publisher('Compass', Int64, queue_size=10)
+
+    rospy.init_node('compass_talker', anonymous=True)
+    r = rospy.Rate(PUBLISH_RATE) # 10hz
+    h = Header()
+    while not rospy.is_shutdown():
+        # update header time
+        h.stamp = rospy.Time.now()
+        
+        new_value = average_angle()
+        rospy.loginfo(new_value)
+        pubCompass.publish(new_value)
+
+        r.sleep()
+
+if __name__ == '__main__':
+    try:
+        compass_talker()
+    except rospy.ROSInterruptException: pass

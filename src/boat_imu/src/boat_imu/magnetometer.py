@@ -18,8 +18,17 @@ except:
     pass
 
 
-OFFSET = [23, 23, 23]
-#TODO: read this from file
+from os.path import expanduser
+
+home = expanduser("~")
+f = open(home + '/boat_data_compass', 'r')
+OFFSET = [0, 0, 0]
+OFFSET[0] = int(f.readline())
+OFFSET[1] = int(f.readline())
+OFFSET[2] = int(f.readline())
+f.close()
+
+AVERAGE_TIME = 1
 
 Wire2.begin()
 
@@ -92,9 +101,9 @@ def subtract_offset(value):
         value[i] = value[i] - OFFSET[i]
     return value
 
-def calc_angle(y, z):
-    compass_angle = math.atan2(y, z)
-    compass_angle = math.degrees(compass_angle)
+def calc_angle(x, y):
+    compass_angle = math.atan2(x, y)
+    compass_angle = math.degrees(compass_angle) + 180
     return compass_angle
 
 def read_magnetometer():
@@ -104,7 +113,27 @@ def read_magnetometer():
     compass = get_raw_mag()
     compass = transform_readable(compass)
     compass = subtract_offset(compass)
-    compass_angle = calc_angle(compass[1], compass[2])
+    return compass
+
+def average_value(av_time):
+    a = []
+    av_value = [0, 0, 0]
+    start = time.time()
+    while(time.time() - start) < av_time:
+        a.append(read_magnetometer())
+        time.sleep(0.1)
+    for i in range(len(a)):
+        for k in range(3):
+            av_value[k] += a[i][k]
+
+    for k in range(3):
+        av_value[k] = av_value[k] / len(a)
+
+    return av_value
+
+def get_mag_angle(av_time):
+    compass = average_values(av_time)
+    compass_angle = calc_angle(-compass[2], compass[1])
     return compass_angle
 
 if __name__ == '__main__':
@@ -116,4 +145,4 @@ if __name__ == '__main__':
         print("x-value: %d" %mag[0]),
         print("y-value: %d" %mag[1]),
         print("z-value: %d" %mag[2])
-        print(read_magnetometer())
+        print(get_mag_angle(AVERAGE_TIME))

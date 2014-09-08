@@ -1,0 +1,55 @@
+#!/usr/bin/env python
+# this line is needed so the execution happens in python environment
+
+import rospy
+from boat_functions.msg import boat_3d
+from std_msgs.msg import Header
+
+def get_active_waypoint(current_point):
+    """
+    update waypoint list, return first waypoint in list
+    """
+    wp_plan = [[1.1,2.2,0], [1.1,1.1,0.], [0.,0.,0.]]
+    endpoint = [0.,0.,0.2]
+    accuracy = 0.0001
+    wp_active = wp_plan[len(wp_plan)-1]
+    if ((current_point < (wp_active[0] + accuracy))
+    and (current_point > (wp_active[0] - accuracy))):
+        if ((current_point < (wp_active[1] + accuracy))
+        and (current_point > (wp_active[1] - accuracy))):
+            wp_plan.pop()
+            try:
+                wp_active = wp_plan[len(wp_plan)-1]
+            except:
+                wp_active = endpoint
+                rospy.loginfo('reached endpoint')
+
+    return wp_active
+
+
+
+def mission_talker():
+    publishWaypoint = rospy.Publisher('ActiveWaypoint', boat_3d, queue_size = 10)
+
+    rospy.init_node('mission_planner', anonymous=True)
+    r = rospy.Rate(2)
+    h = Header()
+    wp = get_active_waypoint
+    while not rospy.is_shutdown():
+        wp = get_active_waypoint([0., 0., 0.])
+        rospy.loginfo('active waypoint' + str(wp))
+        #update header time
+        h.stamp = rospy.Time.now()
+        wp_msg = boat_3d(h, wp[0], wp[1], wp[2])
+        publishWaypoint.publish(wp_msg)
+
+    r.sleep()
+
+
+
+
+
+if __name__ == '__main__':
+    try:
+        mission_talker()
+    except rospy.ROSInterruptException: pass

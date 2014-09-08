@@ -1,0 +1,8 @@
+<launch>
+<group ns="sensors">
+  <node name="publish_imu" pkg="boat_imu" type="publish_imu.py"/>
+  </group>
+
+<group ns="simulated">
+  </group>
+</launch>

@@ -9,7 +9,6 @@ from sensor_msgs.msg import NavSatFix
 ENDPOINT = [0.,0.,0.2]
 ACCURACY = 0.2 
 wp_plan = [[1.1,2.2,0], [1.1,1.1,0.], [0.,0.,0.]]
-publishWaypoint = rospy.Publisher('ActiveWaypoint', boat_3d, queue_size = 10)
 
 
 def get_active_waypoint(current_point):
@@ -32,9 +31,6 @@ def get_active_waypoint(current_point):
 
     return wp_active
 
-def init_mission_talker():
-    rospy.init_node('mission_planner', anonymous=True)
-    
 
 
 def mission_talker(gps_raw):
@@ -50,13 +46,13 @@ def mission_talker(gps_raw):
 
 
 def mission_react_to_gps():
-    rospy.init_node('listen_gps', anonymous=True)
     rospy.loginfo('ros mission planer started gps listener')
     rospy.Subscriber("fix", NavSatFix, mission_talker)
     rospy.spin()
 
 if __name__ == '__main__':
     try:
-        init_mission_talker()
+        rospy.init_node('listen_gps', anonymous=True)
+        publishWaypoint = rospy.Publisher('ActiveWaypoint', boat_3d, queue_size = 10)
         mission_react_to_gps()
     except rospy.ROSInterruptException: pass

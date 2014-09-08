@@ -38,7 +38,6 @@ def mission_talker():
     rospy.init_node('mission_planner', anonymous=True)
     r = rospy.Rate(2)
     h = Header()
-    wp = get_active_waypoint
     while not rospy.is_shutdown():
         wp = get_active_waypoint([0., 0., 0.])
         rospy.loginfo('active waypoint' + str(wp))

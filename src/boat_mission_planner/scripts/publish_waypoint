@@ -4,7 +4,7 @@
 import rospy
 from boat_functions.msg import boat_3d
 from std_msgs.msg import Header
-
+from sensor_msgs.msg import NavSatFix
 
 ENDPOINT = [0.,0.,0.2]
 ACCURACY = 0.2 
@@ -37,7 +37,8 @@ def init_mission_talker():
     
 
 
-def mission_talker(gps_position):
+def mission_talker(gps_raw):
+    gps_position = [gps_raw.latitude, gps_raw.longitude, 0]
     h = Header()
     if not rospy.is_shutdown():
         wp = get_active_waypoint(gps_position)
@@ -49,11 +50,10 @@ def mission_talker(gps_position):
 
 
 def mission_react_to_gps():
-    r = rospy.Rate(2)
-    while not rospy.is_shutdown():
-        gps_position = [0., 0., 0.]
-        mission_talker(gps_position)
-        r.sleep()
+    rospy.init_node('listen_gps', anonymous=True)
+    rospy.loginfo('ros mission planer started gps listener')
+    rospy.Subscriber("fix", NavSatFix, mission_talker)
+    rospy.spin()
 
 if __name__ == '__main__':
     try:

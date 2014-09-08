@@ -9,6 +9,8 @@ from std_msgs.msg import Header
 ENDPOINT = [0.,0.,0.2]
 ACCURACY = 0.2 
 wp_plan = [[1.1,2.2,0], [1.1,1.1,0.], [0.,0.,0.]]
+publishWaypoint = rospy.Publisher('ActiveWaypoint', boat_3d, queue_size = 10)
+
 
 def get_active_waypoint(current_point):
     """
@@ -30,29 +32,31 @@ def get_active_waypoint(current_point):
 
     return wp_active
 
-
-
-def mission_talker():
-    publishWaypoint = rospy.Publisher('ActiveWaypoint', boat_3d, queue_size = 10)
-
+def init_mission_talker():
     rospy.init_node('mission_planner', anonymous=True)
-    r = rospy.Rate(2)
+    
+
+
+def mission_talker(gps_position):
     h = Header()
-    while not rospy.is_shutdown():
-        wp = get_active_waypoint([0., 0., 0.])
+    if not rospy.is_shutdown():
+        wp = get_active_waypoint(gps_position)
         rospy.loginfo('active waypoint' + str(wp))
         #update header time
         h.stamp = rospy.Time.now()
         wp_msg = boat_3d(h, wp[0], wp[1], wp[2])
         publishWaypoint.publish(wp_msg)
 
-    r.sleep()
 
-
-
-
+def mission_react_to_gps():
+    r = rospy.Rate(2)
+    while not rospy.is_shutdown():
+        gps_position = [0., 0., 0.]
+        mission_talker(gps_position)
+        r.sleep()
 
 if __name__ == '__main__':
     try:
-        mission_talker()
+        init_mission_talker()
+        mission_react_to_gps()
     except rospy.ROSInterruptException: pass

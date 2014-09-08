@@ -6,10 +6,14 @@ from boat_functions.msg import boat_3d
 from std_msgs.msg import Header
 from sensor_msgs.msg import NavSatFix
 
+# gps format: [latitude, longitude, elevation]
+# TODO use appropriate data format
 ENDPOINT = [0.,0.,0.2]
-ACCURACY = 0.2 
-wp_plan = [[1.1,2.2,0], [1.1,1.1,0.], [0.,0.,0.]]
-
+ACCURACY = 0.02  # square with 2m side length
+wp_plan = [[1.1,2.2,0], [1.1,1.1,0.], [0.,0.,0.], [50.9400125, -1.38354933333, 0]]
+# approx. lake position: 50.92745,-1.40881
+# 1m ~ 0.01
+# gps accuracy 2.5 m
 
 def get_active_waypoint(current_point):
     """

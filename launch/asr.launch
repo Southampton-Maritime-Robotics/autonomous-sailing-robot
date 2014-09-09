@@ -12,6 +12,7 @@
   </group>
 
   <group ns="actuators">
+    <node name="publish_sail" pkg="boat_servo_sail" type="set_sail_length"/>
   </group>
 
   <group ns="simulated">

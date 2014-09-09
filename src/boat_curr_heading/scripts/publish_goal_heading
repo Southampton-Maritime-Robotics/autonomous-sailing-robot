@@ -34,7 +34,7 @@ def publish_heading(position):
 def heading_react():
     print("check 2")
     rospy.Subscriber("/sensors/fix", NavSatFix, publish_heading)
-    rospy.Subscriber("simulatedFix", NavSatFix, publish_heading)
+    rospy.Subscriber("/sensors/simulatedFix", NavSatFix, publish_heading)
 
     #also update if a waypoint is published
     rospy.Subscriber("/planning/ActiveWaypoint", boat_3d, store_waypoint)

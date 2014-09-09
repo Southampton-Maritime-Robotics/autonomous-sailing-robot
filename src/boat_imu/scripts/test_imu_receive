@@ -17,10 +17,10 @@ def imu_test_listener():
     rospy.init_node('listener', anonymous=True)
     print('test')
     rospy.loginfo('ros imu listener started')
-    rospy.Subscriber("AirPressure", Int64, r_imu.storeIntROS, airPressure)
+    rospy.Subscriber("/sensors/AirPressure", Int64, r_imu.storeIntROS, airPressure)
     rospy.Subscriber(accelerometer['name'], IMU_msg, r_imu.store3dROS, accelerometer)
-    rospy.Subscriber("Magnetometer", IMU_msg, r_imu.store3dROS, magnetometer)
-    rospy.Subscriber("Gyroscope", IMU_msg, r_imu.store3dROS, gyroscope)
+    rospy.Subscriber("/sensors/Magnetometer", IMU_msg, r_imu.store3dROS, magnetometer)
+    rospy.Subscriber("/sensors/Gyroscope", IMU_msg, r_imu.store3dROS, gyroscope)
     rospy.spin()
 
 if  __name__ == '__main__':

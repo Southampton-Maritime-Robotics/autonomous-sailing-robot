@@ -51,7 +51,7 @@ def mission_talker(gps_raw):
 
 def mission_react_to_gps():
     rospy.loginfo('ros mission planer started gps listener')
-    rospy.Subscriber("fix", NavSatFix, mission_talker)
+    rospy.Subscriber("/sensors/fix", NavSatFix, mission_talker)
     rospy.spin()
 
 if __name__ == '__main__':

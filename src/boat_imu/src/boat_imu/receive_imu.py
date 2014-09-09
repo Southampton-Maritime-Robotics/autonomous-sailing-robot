@@ -79,10 +79,10 @@ def store3dROS(data, storage):
 def imu_listener():
     rospy.init_node('listener', anonymous=True)
     rospy.loginfo('ros imu listener started')
-    rospy.Subscriber("AirPressure", Int64, storeIntROS, airPressure)
+    rospy.Subscriber("/sensors/AirPressure", Int64, storeIntROS, airPressure)
     rospy.Subscriber(accelerometer['name'], IMU_msg, store3dROS, accelerometer)
-    rospy.Subscriber("Magnetometer", IMU_msg, store3dROS, magnetometer)
-    rospy.Subscriber("Gyroscope", IMU_msg, store3dROS, gyroscope)
+    rospy.Subscriber("/sensors/Magnetometer", IMU_msg, store3dROS, magnetometer)
+    rospy.Subscriber("/sensors/Gyroscope", IMU_msg, store3dROS, gyroscope)
     rospy.spin()
                                                     
 

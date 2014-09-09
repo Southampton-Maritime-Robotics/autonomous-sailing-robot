@@ -29,5 +29,5 @@ def wind_talker():
 
 if __name__ == '__main__':
     try:
-        talker()
+        wind_talker()
     except rospy.ROSInterruptException: pass

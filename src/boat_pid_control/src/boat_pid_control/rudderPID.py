@@ -15,12 +15,14 @@ consider tack and jibe
 """
 
 import rospy
-
+from pid_controller_class import PID
 
 PROPORTIONAL_GAIN = 0.1
 INTEGRAL_GAIN = 0
 DERIVATIVE_GAIN = 0
+INTEGRAL_LIMIT = 1
 
+controller = PID(PROPORTIONAL_GAIN, INTEGRAL_GAIN, DERIVATIVE_GAIN, INTEGRAL_LIMIT, -INTEGRAL_LIMIT)
 
 currentHeading = 23
 goalHeading = 35
@@ -28,15 +30,9 @@ goalHeading = 35
 def get_pid(currentHeading, goalHeading):
     # with new ROS input for goal or current heading
 
-    # Error calculation for angular error!
+    # TODO Error calculation for angular error!
     error = currentHeading - goalHeading
-
-
-    p = error * PROPORTIONAL_GAIN
-    i = 0
-    d = 0
-
-    correction = p + i + d
+    correction = controller.update_PID(error)
     rudder_position = 2
     #translate correction to servo change ...
 

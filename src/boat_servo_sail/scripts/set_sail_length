@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+# this line is needed so the execution happens in python environment
+
+"""
+set sail to appropriate length for picking up speed
+"""
+import rospy
+from std_msgs.msg import Int64
+from std_msgs.msg import Header
+from bbio import *
+from Servo import *
+import time
+from boat_servo_sail import sail_angle
+
+sail_servo = Servo(PWM1A)
+# servo2 = Servo(PWM2A)
+sail_servo.write(0)
+
+wind_direction = 0
+
+def store_wind_dir(wind_dir):
+    wind_direction = wind_dir
+
+def publish_sail(compass):
+     h = Header()
+     if not rospy.is_shutdown():
+         sail = sail_angle.find_length(compass, wind_direction)
+         rospy.loginfo('sail position' + str(sail))
+         #update header time
+         h.stamp = rospy.Time.now()
+         sail_servo.write(sail)
+         # TODO: switch to sail message that includes header
+         publishSail.publish(sail)
+
+
+
+def sail_react():
+    rospy.Subscriber("Compass", Int64, publish_sail)
+
+    # save wind direction
+    rospy.Subscriber("WindDirection", boat_3d, store_waypoint)
+    print("spinning")
+    rospy.spin()
+
+if __name__ == '__main__':
+    try:
+        rospy.init_node('sail_talker', anonymous=True)
+        publishSail = rospy.Publisher('SailPosition', Int64, queue_size=10)
+        sail_react()
+    except rospy.ROSInterruptException: pass

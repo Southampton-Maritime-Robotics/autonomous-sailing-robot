@@ -27,7 +27,7 @@ def publish_heading(position):
          #update header time
          h.stamp = rospy.Time.now()
          # TODO: switch to heading message that includes header
-         publishWaypoint.publish(heading)
+         publishHeading.publish(heading)
 
 
 

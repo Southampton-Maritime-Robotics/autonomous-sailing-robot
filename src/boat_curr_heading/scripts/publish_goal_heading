@@ -17,7 +17,7 @@ import time
 current_waypoint = [0, 0]
 
 def store_waypoint(wp):
-    current_waypoint = [wp(0), wp(1)]
+    current_waypoint = [wp.data[0], wp.data[1]]
 
 def publish_heading(position):
      h = Header()
@@ -33,11 +33,11 @@ def publish_heading(position):
 
 def heading_react():
     print("check 2")
-    rospy.Subscriber("fix", NavSatFix, publish_heading)
+    rospy.Subscriber("/sensors/fix", NavSatFix, publish_heading)
     rospy.Subscriber("simulatedFix", NavSatFix, publish_heading)
 
     #also update if a waypoint is published
-    rospy.Subscriber("waypoint", boat_3d, store_waypoint)
+    rospy.Subscriber("/planning/ActiveWaypoint", boat_3d, store_waypoint)
     print("spinning")
     rospy.spin()
 

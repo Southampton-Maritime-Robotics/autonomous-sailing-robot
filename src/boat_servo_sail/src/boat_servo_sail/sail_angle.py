@@ -1,7 +1,8 @@
 import bisect
 
 def calculate_angle_boat_wind(boat_compass, wind_direction):
-    angle = abs(boat_compass - wind_direction)
+    wind_dir = wind_direction
+    angle = abs(boat_compass - wind_dir)
     if angle > 180:
         angle = 360 - angle
     return angle
@@ -18,10 +19,10 @@ def assign_length(diff_wind_boat):
         (90, 0.6),
         (110, 0.5),
         (120, 0.4),
-        (130, 0.3,
+        (130, 0.3),
         (140, 0.2),
         (150, 0.15),
-        (180, 0.1), #upwind
+        (180, 0.1) #upwind
         ]
 
     angles.sort()

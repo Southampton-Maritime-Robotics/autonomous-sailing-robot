@@ -18,13 +18,13 @@ sail_servo.write(0)
 
 wind_direction = 0
 
-def store_wind_dir(wind_dir):
-    wind_direction = wind_dir
+def store_wind_direction(wind_dir):
+    wind_direction = wind_dir.data
 
 def publish_sail(compass):
      h = Header()
      if not rospy.is_shutdown():
-         sail = sail_angle.find_length(compass, wind_direction)
+         sail = sail_angle.find_length(compass.data, wind_direction)
          rospy.loginfo('sail position' + str(sail))
          #update header time
          h.stamp = rospy.Time.now()
@@ -35,11 +35,10 @@ def publish_sail(compass):
 
 
 def sail_react():
-    rospy.Subscriber("Compass", Int64, publish_sail)
+    rospy.Subscriber("/sensors/Compass", Int64, publish_sail)
 
     # save wind direction
-    rospy.Subscriber("WindDirection", boat_3d, store_waypoint)
-    print("spinning")
+    rospy.Subscriber("/sensors/WindDirection", Int64, store_wind_direction)
     rospy.spin()
 
 if __name__ == '__main__':

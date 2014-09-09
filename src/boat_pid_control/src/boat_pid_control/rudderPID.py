@@ -1,14 +1,16 @@
 """
 PID control for the sailing robot
-controling sail position
-based on goal sail direction
+controlling rudder position
+based on heading error
 
 Inputs: 
 - current heading
 - goal heading
 
 Output:
-- Change in motor position/motor position
+- Motor position
+- 1 for max rudder right position
++ 1 for max rudder left position
 
 TODO:
 consider tack and jibe

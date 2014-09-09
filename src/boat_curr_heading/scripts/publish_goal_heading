@@ -17,6 +17,7 @@ import time
 current_waypoint = [0, 0]
 
 def store_waypoint(wp):
+    global current_waypoint
     current_waypoint = [wp.x_value, wp.y_value]
 
 def publish_heading(position):

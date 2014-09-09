@@ -27,13 +27,21 @@ controller = PID(PROPORTIONAL_GAIN, INTEGRAL_GAIN, DERIVATIVE_GAIN, INTEGRAL_LIM
 currentHeading = 23
 goalHeading = 35
 
+def angle_difference(currentHeading, goalHeading):
+    difference = goalHeading - currentHeading
+    if difference < 0:
+        difference += 360
+    elif difference > 360:
+        difference -= 360
+    return difference
+
 def get_pid(currentHeading, goalHeading):
     # with new ROS input for goal or current heading
 
     # TODO Error calculation for angular error!
-    error = currentHeading - goalHeading
+    error = angle_difference(currentHeading,goalHeading)
     correction = controller.update_PID(error)
     rudder_position = 2
     #translate correction to servo change ...
 
-return rudder_position
+    return rudder_position

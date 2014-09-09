@@ -4,40 +4,47 @@
 """
 Script to calculate and publish
 goal heading
+
 """
 import rospy
 from std_msgs.msg import Int64
 from std_msgs.msg import Header
+from boat_functions.msg import boat_3d
 from sensor_msgs.msg import NavSatFix
-#from boat_current_heading import goalHeading as goal
+from boat_curr_heading import goalHeading as goal
 import time
 
-#position=
+current_waypoint = [0, 0]
 
-def calc_heading()
+def store_waypoint(wp):
+    current_waypoint = [wp(0), wp(1)]
 
-   h = Header()
-     while not rospy.is_shutdown():
-        # update header time
-        h.stamp = rospy.Time.now()
-        
-        #new_value = goal.get_heading(position, waypoint)
-        rospy.loginfo(new_value)
-        pubHeading.publish(new_value)
+def publish_heading(position):
+     h = Header()
+     if not rospy.is_shutdown():
+         heading = calc_heading(position)
+         rospy.loginfo('goal heading' + str(heading))
+         #update header time
+         h.stamp = rospy.Time.now()
+         # TODO: switch to heading message that includes header
+         publishWaypoint.publish(heading)
 
 
-def heading_talker():
+
+def heading_react():
     try:
-        rospy.Subscriber("fix", NavSatFix, calc_heading)
+        rospy.Subscriber("fix", NavSatFix, publish_heading)
     except:
-        rospy.Subscriber("simulated-fix", NavSatFix, calc_heading)
-    # also update if a waypoint is published
-    #rospy.Subscriber("waypoint", Int64, calc_heading)
+        rospy.Subscriber("simulated-fix", NavSatFix, publish_heading)
+    
+    #also update if a waypoint is published
+    rospy.Subscriber("waypoint", boat_3d, store_waypoint)
+    rospy.spin()
 
 if __name__ == '__main__':
     try:
         rospy.init_node('heading_talker', anonymous=True)
         publishHeading = rospy.Publisher('GoalHeading', Int64, queue_size=10)
-        heading_talker()
+        heading_react()
 
     except rospy.ROSInterruptException: pass

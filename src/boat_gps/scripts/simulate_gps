@@ -43,6 +43,6 @@ def sim_gps_talker():
 if __name__ == '__main__':
     try:
         rospy.init_node('publishSimulated', anonymous=True)
-        publishSimulated = rospy.Publisher('simulated-fix', NavSatFix, queue_size = 10)
+        publishSimulated = rospy.Publisher('simulatedFix', NavSatFix, queue_size = 10)
         sim_gps_talker()
     except rospy.ROSInterruptException: pass

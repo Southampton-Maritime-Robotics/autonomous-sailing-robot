@@ -22,7 +22,7 @@ def store_waypoint(wp):
 def publish_heading(position):
      h = Header()
      if not rospy.is_shutdown():
-         heading = calc_heading(position)
+         heading = goal.calc_heading(position, current_waypoint)
          rospy.loginfo('goal heading' + str(heading))
          #update header time
          h.stamp = rospy.Time.now()
@@ -32,19 +32,20 @@ def publish_heading(position):
 
 
 def heading_react():
-    try:
-        rospy.Subscriber("fix", NavSatFix, publish_heading)
-    except:
-        rospy.Subscriber("simulated-fix", NavSatFix, publish_heading)
-    
+    print("check 2")
+    rospy.Subscriber("fix", NavSatFix, publish_heading)
+    rospy.Subscriber("simulatedFix", NavSatFix, publish_heading)
+
     #also update if a waypoint is published
     rospy.Subscriber("waypoint", boat_3d, store_waypoint)
+    print("spinning")
     rospy.spin()
 
 if __name__ == '__main__':
     try:
         rospy.init_node('heading_talker', anonymous=True)
         publishHeading = rospy.Publisher('GoalHeading', Int64, queue_size=10)
+        print("check 1")
         heading_react()
 
     except rospy.ROSInterruptException: pass

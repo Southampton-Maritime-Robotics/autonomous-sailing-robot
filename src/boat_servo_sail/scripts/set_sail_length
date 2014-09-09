@@ -16,9 +16,10 @@ sail_servo = Servo(PWM1A)
 # servo2 = Servo(PWM2A)
 sail_servo.write(0)
 
-wind_direction = 0
+wind_direction = 120
 
 def store_wind_direction(wind_dir):
+    global wind_direction
     wind_direction = wind_dir.data
 
 def publish_sail(compass):

@@ -14,7 +14,7 @@ goal_heading = 0
 
 def store_goal(goal):
     global goal_heading
-    goal_heading = goal
+    goal_heading = goal.data
 
 def publish_pid(current):
      h = Header()

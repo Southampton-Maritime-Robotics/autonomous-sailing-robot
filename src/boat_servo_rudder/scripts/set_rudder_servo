@@ -1,0 +1,49 @@
+#!/usr/bin/env python
+# this line is needed so the execution happens in python environment
+
+"""
+set rudder according to PID results
+"""
+import rospy
+from std_msgs.msg import Float32
+from std_msgs.msg import Header
+from bbio import *
+from Servo import *
+
+rudder_servo = Servo(PWM2A)
+rudder_servo.write(0)
+RUDDER_LEFT_MAX = 50
+RUDDER_RIGHT_MAX = 0
+RUDDER_ZERO = 20
+
+def get_pwm(rudder_pid):
+    if rudder_pid > 0:
+    # rudder needs to go right
+        rudder_pwm = rudder_pid * abs(RUDDER_RIGHT_MAX - RUDDER_ZERO)
+    else:
+    # rudder needs to go left
+        rudder_pwm = -rudder_pid * abs(RUDDER_LEFT_MAX - RUDDER_ZERO)
+    return rudder_pwm
+
+def set_rudder(pid):
+     h = Header()
+     if not rospy.is_shutdown():
+         rudder_pid = pid.data
+         rudder_pwm = get_pwm(rudder_pid)
+         rospy.loginfo('rudder pwm' + str(rudder_pwm))
+         #update header time
+         h.stamp = rospy.Time.now()
+         rudder_servo.write(rudder_pwm)
+
+
+def rudder_react():
+    rospy.Subscriber("/planning/RudderPID", Float32, set_rudder)
+
+    rospy.spin()
+
+if __name__ == '__main__':
+    try:
+        rospy.init_node('set_rudder', anonymous=True)
+
+        rudder_react()
+    except rospy.ROSInterruptException: pass

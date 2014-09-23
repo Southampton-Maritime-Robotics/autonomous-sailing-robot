@@ -1,0 +1,16 @@
+<launch>
+  <group ns="sensors">
+    <node name="publish_imu" pkg="boat_imu" type="simulated_imu"/>
+    <node name="publish_gps" pkg="boat_gps" type="simulate_gps"/>
+    <node name="publish_wind_dir" pkg="boat_wind_sensor" type="publish_wind_dir"/>
+    <node name="publish_compass" pkg="boat_imu" type="simulated_compass"/>
+  </group>
+
+  <group ns="planning">
+    <node name="publish_waypoint" pkg="boat_mission_planner" type="publish_waypoint"/>
+    <node name="publish_goal_heading" pkg="boat_curr_heading" type="publish_goal_heading"/>
+    <node name="publish_rudder_pid" pkg="boat_pid_control" type="set_rudder"/>
+  </group>
+
+
+</launch>

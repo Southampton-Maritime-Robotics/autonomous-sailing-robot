@@ -14,7 +14,7 @@ def get_wind_dir():
 def wind_talker():
     pubWindDir = rospy.Publisher('WindDirection', Int64, queue_size=10)
     rospy.init_node('wind_talker', anonymous=True)
-    r = rospy.Rate(0.1) # in Hz
+    r = rospy.Rate(10) # in Hz
     h = Header()
     while not rospy.is_shutdown():
         # update header time

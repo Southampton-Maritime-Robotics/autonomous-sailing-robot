@@ -10,32 +10,57 @@ import rospy
 from std_msgs.msg import Header
 from sensor_msgs.msg import NavSatFix
 
-# initialise global memory for last point
-last_gps = NavSatFix()
-last_gps.latitude = 1
-last_gps.longitude = 2
+def connect(last_gps, wp):
+    if wp == [0, 0]:
+        return[0, -10]
+    elif wp == [100,100]:
+        return[5, 5]
+    elif wp == [0,200]:
+        return[-5, 5]
 
-def get_next_position():
+def get_wp(gps, wp):
+    if wp == gps:
+        if wp == [0,0]:
+            return[100,100]
+        elif wp == [100,100]:
+            return[0,200]
+        elif wp == [0,200]:
+            return[0,0]
+    else:
+        return wp
+
+def get_next_position(last_gps, wp):
     """
     use simulated speeds or other estimates to determine next gps position
     """
-    wp_active = last_gps
+    wp = get_wp(last_gps, wp)
+    connect_step = connect(last_gps, wp)
+    last_gps[0] = last_gps[0] + connect_step[0]
+    last_gps[1] = last_gps[1] + connect_step[1]
     #TODO get actual simulated values
     # based on sail angle, heading
 
-    return wp_active
+    return [wp, last_gps]
 
 
 
 def sim_gps_talker():
-    r = rospy.Rate(0.5) # in Hz
+    r = rospy.Rate(1) # in Hz
     h = Header()
+    position = [0, 0]
+    wp = [100,100]
+    positionNav = NavSatFix()
+
     while not rospy.is_shutdown():
-        position = get_next_position()
+        position_wp = get_next_position(position, wp)
+        position = position_wp[1]
+        wp = position_wp[0]
         rospy.loginfo('simulated next position: ' + str(position))
         #update header time
         h.stamp = rospy.Time.now()
-        publishSimulated.publish(get_next_position())
+        positionNav.latitude = float(position[0])/100 + 1
+        positionNav.longitude = float(position[1])/100 + 1
+        publishSimulated.publish(positionNav)
 
         r.sleep()
 

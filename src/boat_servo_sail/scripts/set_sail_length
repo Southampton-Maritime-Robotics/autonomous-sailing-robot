@@ -8,8 +8,12 @@ import rospy
 from std_msgs.msg import Float32
 from std_msgs.msg import Int64
 from std_msgs.msg import Header
-from bbio import *
-from Servo import *
+try: 
+    from bbio import *
+    from Servo import *
+except:
+    from boat_functions.notbbio import *
+    PWM1A = 1
 import time
 from boat_servo_sail import sail_angle
 

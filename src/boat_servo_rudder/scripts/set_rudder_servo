@@ -7,8 +7,12 @@ set rudder according to PID results
 import rospy
 from std_msgs.msg import Float32
 from std_msgs.msg import Header
-from bbio import *
-from Servo import *
+try:
+    from bbio import *
+    from Servo import *
+except:
+    from boat_functions.notbbio import *
+    PWM2A = 7
 
 RUDDER_LEFT_MAX = 145
 RUDDER_RIGHT_MAX = 60

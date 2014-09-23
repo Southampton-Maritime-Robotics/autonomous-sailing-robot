@@ -1,0 +1,11 @@
+#!/usr/bin/env python
+# this line is needed so the execution happens in python environment
+"""
+import rospy
+import sys
+print sys.path
+from boat_functions import test_printer as bf
+from boat_imu import printing_imu as bi
+bf.test_printer()
+bi.printing_imu()
+"""

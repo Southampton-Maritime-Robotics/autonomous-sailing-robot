@@ -1,0 +1,42 @@
+#!/usr/bin/env python
+# this line is needed so the execution happens in python environment
+
+"""
+Script to find offset values for compass,
+store them
+"""
+"""
+import rospy
+from std_msgs.msg import Int64
+from std_msgs.msg import Header
+from boat_imu.msg import IMU_msg
+
+from boat_imu import magnetometer as mag
+import time
+
+AVERAGE_TIME = 0.1 # in Seconds
+PUBLISH_RATE = 10 # in Hz
+
+
+def compass_talker():
+    pubCompass = rospy.Publisher('Compass', Int64, queue_size=10)
+
+    rospy.init_node('compass_talker', anonymous=True)
+    r = rospy.Rate(PUBLISH_RATE) # 10hz
+    h = Header()
+    while not rospy.is_shutdown():
+        # update header time
+        h.stamp = rospy.Time.now()
+        
+        new_value = mag.get_mag_angle(AVERAGE_TIME)
+        rospy.loginfo(new_value)
+        pubCompass.publish(new_value)
+
+        r.sleep()
+
+if __name__ == '__main__':
+    try:
+        compass_talker()
+    except rospy.ROSInterruptException: pass
+
+"""

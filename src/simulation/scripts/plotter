@@ -1,0 +1,28 @@
+#!/usr/bin/env python
+# this line is needed so the execution happens in python environment
+
+"""
+plot simulated boat
+"""
+import rospy
+from std_msgs.msg import Float32
+from std_msgs.msg import Header
+from std_msgs.msg import Int64
+from sensor_msgs.msg import NavSatFix
+from simulation import main as sim
+
+
+
+def get_simulation_values():
+    #rospy.Subscriber("/planning/RudderPID", Float32, sim.plotRudder)
+    rospy.Subscriber("/sensors/WindDirection", Int64, sim.plotWind)
+    rospy.Subscriber("/sensors/simulatedFix", NavSatFix, sim.plotPosition)
+    rospy.spin()
+
+if __name__ == '__main__':
+    try:
+        #sim.setup()
+        rospy.init_node('simulate', anonymous=True)
+
+        get_simulation_values()
+    except rospy.ROSInterruptException: pass

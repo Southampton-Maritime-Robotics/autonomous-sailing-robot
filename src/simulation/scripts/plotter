@@ -16,7 +16,8 @@ from simulation import main as sim
 def get_simulation_values():
     #rospy.Subscriber("/planning/RudderPID", Float32, sim.plotRudder)
     rospy.Subscriber("/sensors/WindDirection", Int64, sim.plotWind)
-    rospy.Subscriber("/sensors/simulatedFix", NavSatFix, sim.plotPosition)
+    #rospy.Subscriber("/sensors/simulatedFix", NavSatFix, sim.plotPosition)
+    rospy.Subscriber("/fix", NavSatFix, sim.store_gps)
     rospy.spin()
 
 if __name__ == '__main__':

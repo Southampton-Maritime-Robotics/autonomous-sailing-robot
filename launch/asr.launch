@@ -8,7 +8,7 @@
 
   <group ns="planning">
     <node name="publish_waypoint" pkg="boat_mission_planner" type="publish_waypoint"/>
-    <node name="publish_goal_heading" pkg="boat_curr_heading" type="publish_goal_heading"/>
+    <node name="publish_goal_heading" pkg="boat_goal_heading" type="publish_goal_heading"/>
     <node name="publish_rudder_pid" pkg="boat_pid_control" type="set_rudder"/>
   </group>
 

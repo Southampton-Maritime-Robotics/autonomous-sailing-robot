@@ -1,0 +1,64 @@
+* current OS is in alternative folder.
+
+* Internet over USB:
+	- http://askubuntu.com/questions/380810/internet-over-usb-on-beaglebone-black
+	- http://www.crashcourse.ca/wiki/index.php/BBB_networking_in_tethered_mode
+	On the BBB side, manually:
+
+	# route add default gw 192.168.7.1
+	# echo "nameserver 8.8.8.8" > /etc/resolv.conf
+
+	And on the server side:
+
+	# echo 1 > /proc/sys/net/ipv4/ip_forward
+	# iptables -A POSTROUTING -t nat -j MASQUERADE
+
+	/etc/resolv.conf might need manual editing
+
+* apt-get install vim
+
+
+* NOT WORKING:
+  http://wiki.ros.org/hydro/Installation/Ubuntu
+  ros-hydro-desktop-full
+
+* NOT TESTED:
+  http://wiki.ros.org/hydro/Installation/UbuntuARM
+
+* Worked apparently (should be updated):
+  http://wiki.ros.org/hydro/Installation/Source
+  'sbc1' package dependency doesn't exist -> try without it, following:
+  http://wiki.ros.org/ROSberryPi/Setting%20up%20Hydro%20on%20RaspberryPi
+
+
+======= I2C =======
+https://slug.blog.aeminium.org/2013/10/06/9-dof-imu-itg3205adxl345hmc5883l-beaglebone-black/
+http://www.gigamegablog.com/2012/11/04/beaglebone-coding-101-i2c/
+http://datko.net/2013/11/03/bbb_i2c/
+
+on BBB:
+apt-get install i2c-tools
+-> already installed!
+sudo i2cdetect -r -y 1
+sudo i2cdump 1 0x68
+
+
+apt-get install python-smbus
+adafruit python libraries for lot's of i2c devices - raspberry pi though!:
+https://learn.adafruit.com/using-the-bmp085-with-raspberry-pi/using-the-adafruit-bmp085-python-library
+gti clone https://github.com/adafruit/Adafruit-Raspberry-Pi-Python-Code
+
+
+======= PWM =======
+https://learn.adafruit.com/setting-up-io-python-library-on-beaglebone-black/installation-on-ubuntu
+https://learn.adafruit.com/downloads/pdf/controlling-a-servo-with-a-beaglebone-black.pdf
+
+
+sudo ntpdate pool.ntp.org
+
+======== disample HDMI ======
+
+running from SD:
+/mnt/boot/uEnv.txt
+
+http://www.logicsupply.com/blog/2013/07/18/disabling-the-beaglebone-black-hdmi-cape/
